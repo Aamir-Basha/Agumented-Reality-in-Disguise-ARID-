@@ -1,6 +1,3 @@
-# the CVTest version of main is setup to test multiple transformations of the raw data at once
-# for performance use Servertest
-
 import threading
 import asyncio
 import io
@@ -9,7 +6,7 @@ import PIL.Image as Image
 
 from monocle import get_image, displayUI, display2, get_nav, displayStart
 from qr_code import * #detect_laptop_test , detect_monocle, detect_monocle_thresholding_a
-from send_to_server import submit_search_text, process_response_laptop, process_response_monocle
+from send_to_server import submit_search_text, process_response_monocle
 from encryption import decrypt_hidden
 
 import cv2
@@ -18,9 +15,8 @@ import os
 import shutil
 
 
-# Will be replaced with a function from 'Device lib' ! 
 mon_id = 420
-URL = 'http://194.164.48.22:5000/search'
+URL = 'http://194.164.**.**:5000/search'
 lockBLE = threading.Lock()
 
 class mainThread(threading.Thread):
@@ -48,15 +44,6 @@ async def main():
 		ev.clear()
 		print("ready for new photo")
 		try:
-			#Start Menu
-			# bootup_l1 = ""
-			# bootup_l2 = "press L to scan"
-			# bootup_l3 = ""
-			# bootup_l4 = ""
-			# ev.clear()
-			# await displayUI(bootup_l1, bootup_l2,  bootup_l3, bootup_l4)
-			# time.sleep(5)
-
 			print("Step 2: taking a photo")
 			data = await get_image()
 			ev.clear()
@@ -129,7 +116,7 @@ async def main():
 			await displayUI(serverresponse_l1, serverresponse_l2, serverresponse_l3, serverresponse_l4)
 			ev.clear()
 
-			await process_response_laptop(qr_data[0], response, URL, mon_id)
+			await process_response_monocle(qr_data[0], response, URL, mon_id)
 			ev.clear()
 			time.sleep(30)
 			continue

@@ -12,7 +12,6 @@ public_key = load_public_key('public_key.pem')
 
 
 
-##################
 async def submit_search_text(plaintext, url, add_to_db=False, hidden_text=None, mon_id=None):
     try:
         async with aiohttp.ClientSession() as session:
@@ -24,8 +23,6 @@ async def submit_search_text(plaintext, url, add_to_db=False, hidden_text=None, 
             async with session.post(url, data=data) as response:
                 if response.status == 200:
                     # This if-statmaent will handle the case that the hidden text was found, to use json
-                    # Why JSON! So that we can get the hidden_text "encrypted" but the Monocle ID in plain_text
-
                     content_type = response.headers.get('Content-Type', '')
                     if 'application/json' in content_type:
                         json_data = await response.json()
@@ -48,36 +45,8 @@ async def submit_search_text(plaintext, url, add_to_db=False, hidden_text=None, 
         return f'Error from aiohttp: {e}'
 
 
-################## This function is to be used only when testing the Monocle!!
-async def process_response_monocle(qr_text, response, url, mon_id):
-    try:
-        if "No hidden text found" in response:
-            # Ask to add a hidden text or not using the buttons
-            await display("Do you want to add this plaintext to the database? NO/YES")
 
-            async def add_to_db_or_not(button):
-                if button == touch.A:
-                    hidden_text = input("Enter hidden text: ")
-                    encrypted_txt = await encrypt_hidden(hidden_text)    
-                    response = await submit_search_text(qr_text, url, add_to_db=True, hidden_text=encrypted_txt,mon_id=mon_id)
-                    if 'successfully added the data.' in response:
-                        print('Data was added successfully.')
-                    else:
-                        print('Error while adding new Data')
-                elif button == touch.B:  
-                    print("No plaintext added.", response)             
-
-            touch.callback(touch.EITHER, add_to_db_or_not)
-        else:
-            plain = await decrypt_hidden(response, private_key)
-            print('Hidden message:', plain)  # Print the response from the server if the hidden-text was already stored
-    except aiohttp.ClientError as e:
-        print(f"Error submitting search text: {e}")
-##################
-
-
-################## This function is to be used only when testing the WITHOUT the Monocle!!
-async def process_response_laptop(qr_text, response, url,mon_id):
+async def process_response_monocle(qr_text, response, url,mon_id):
    try:
     if "No hidden text found" in response:
         add_to_db =  input("Do you want to add this plaintext to the database? (yes/no): ").lower()
@@ -99,6 +68,13 @@ async def process_response_laptop(qr_text, response, url,mon_id):
         return response
    except aiohttp.ClientError as e:
        print(f"Error submitting search text: {e}")
-##################
+
+
+
+
+
+
+
+
 
 
