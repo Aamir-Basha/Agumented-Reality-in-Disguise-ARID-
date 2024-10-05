@@ -5,11 +5,11 @@
 
 **Showcasing** There is a script for Running the Project Without the Monocle
 
-![Project Logo](./images/showcasing.jpg)
-
 Here’s an example:
 
 <img src="./images/showcasing.jpg" alt="QR Code Example" width="300" />
+<img src="./images/showcasing2.jpg" alt="QR Code Example" width="300" />
+
 
 
 
