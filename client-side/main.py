@@ -1,11 +1,13 @@
+# This file is for show casing the project without the Monocle
+
+
 import threading
 import asyncio
 import io
 from brilliant import *
 import PIL.Image as Image
 
-from monocle import get_image, displayUI, display2, get_nav, displayStart
-from qr_code import * #detect_laptop_test , detect_monocle, detect_monocle_thresholding_a
+from qr_code import *
 from send_to_server import submit_search_text, process_response_monocle
 from encryption import decrypt_hidden
 
@@ -16,7 +18,7 @@ import shutil
 
 
 mon_id = 420
-URL = 'http://194.164.**.**:5000/search'
+URL = 'http://localhost:8888/search'
 lockBLE = threading.Lock()
 
 class mainThread(threading.Thread):
@@ -45,7 +47,7 @@ async def main():
 		print("ready for new photo")
 		try:
 			print("Step 2: taking a photo")
-			data = await get_image()
+			data = await detect_laptop_test(i)
 			ev.clear()
 		except:
 			print("Connection Error")
@@ -53,29 +55,29 @@ async def main():
 			perror_l2 = "Connection error"
 			perror_l3 = "Press R to restart"
 			perror_l4 = ""
-			await displayUI(perror_l1, perror_l2, perror_l3, perror_l4)
+			#await displayUI(perror_l1, perror_l2, perror_l3, perror_l4)
 			ev.clear()
 			continue
 		
-		if data == bytearray():
+		if data == None:
 			print("reset")
+			i +=1
 			ev.clear()
+			time.sleep(5)
 			continue
 
+			
 		#  Foto wird verarbeitet
 		print("Step 4: converting raw data to jpg")
 		processing_l1 = ""
 		processing_l2 = "Processing photo..."
 		processing_l3 = ""
 		processing_l4 = ""	
-		# ev.clear()
-		await displayUI(processing_l1, processing_l2, processing_l3, processing_l4)
 		ev.clear()
-		time.sleep(0.5)
+		#await displayUI(processing_l1, processing_l2, processing_l3, processing_l4)
 
 		#IMG convertion
 		try:
-			# print("processing photo")
 			img =  Image.open(io.BytesIO(data))
 		except:
 			print("Processing Error")
@@ -83,24 +85,24 @@ async def main():
 			perror_l2 = "Processing error"
 			perror_l3 = "Press R to restart"
 			perror_l4 = ""
-			await displayUI(perror_l1, perror_l2, perror_l3, perror_l4)
+			#await displayUI(perror_l1, perror_l2, perror_l3, perror_l4)
 			ev.clear()
 			continue
 		jpgImg = img.convert('RGB')
-		jpgImg.save(f'output//output{i}.jpg')
+		jpgImg.save(f'output/output{i}.jpg')
 
 		#search for qr-code in picture
 		print("Step 5: extracting QR Code with computer vision")
+		await print_tharashholding(i)
 		qr_data = await detect_qreader_monocle(i)
-		ev.clear()
-		# qr_data = await detect_monocle_thresholding_bi(i)
-		print(qr_data)	
+		await detect_monocle_GS(i)
+
 		if qr_data == ():
 			noQR_l1 = ""
 			noQR_l2 = "No QR-Code found"
 			noQR_l3 = "Restarting..."
 			noQR_l4 = ""
-			await displayUI(noQR_l1, noQR_l2, noQR_l3, noQR_l4)
+			#await displayUI(noQR_l1, noQR_l2, noQR_l3, noQR_l4)
 			ev.clear()
 
 		elif qr_data[0] is not None:
@@ -108,27 +110,24 @@ async def main():
 			# Search for Server info on QR-Code
 			print("Step 6: communicating with Database")
 			response = await submit_search_text(qr_data[0], URL)
-			print(response)
 			serverresponse_l1 = "Public message:"
 			serverresponse_l2 = qr_data[0]
 			serverresponse_l3 = "Hidden message:"
 			serverresponse_l4 = response
-			await displayUI(serverresponse_l1, serverresponse_l2, serverresponse_l3, serverresponse_l4)
-			ev.clear()
-
+			#await displayUI(serverresponse_l1, serverresponse_l2, serverresponse_l3, serverresponse_l4)
 			await process_response_monocle(qr_data[0], response, URL, mon_id)
 			ev.clear()
-			time.sleep(30)
-			continue
+			time.sleep(5)
 
+			
 		else:
 			mptQR_l1 = ""
 			mptQR_l2 = "No message found"
 			mptQR_l3 = "Restarting..."
 			mptQR_l4 = ""
-			await displayUI(mptQR_l1, mptQR_l2, mptQR_l3, mptQR_l4)
+			#await displayUI(mptQR_l1, mptQR_l2, mptQR_l3, mptQR_l4)
+		
 		ev.clear()
-
 		time.sleep(0.5)
 		print("End of main loop")
 		i+=1

@@ -1,6 +1,9 @@
+# This file is for show casing the project without the Monocle
+
+
 import aiohttp
 import time
-from monocle import display, display2
+
 from encryption import decrypt_hidden, encrypt_hidden
 from keys import load_public_key, load_private_key
 
@@ -29,11 +32,9 @@ async def submit_search_text(plaintext, url, add_to_db=False, hidden_text=None, 
                         encrypted_msg = json_data.get('encrypted_msg', '')
                         mon_id = json_data.get('mon_id', '')
                         plain_hidden = await decrypt_hidden(encrypted_msg, private_key)
-                        full_msg = plain_hidden
-                        return full_msg
+                        return plain_hidden
                         # This elf will hanlde the response when the hidden text is not found, thus 
                         # we use response.text() to exctract the "No hidden text found" in response: 
-
                     elif 'text/html' in content_type: 
                         plain_text = await response.text()
                         return plain_text
@@ -55,7 +56,7 @@ async def process_response_monocle(qr_text, response, url,mon_id):
             abc = input("Enter hidden text: ")
             encrypted_txt = await encrypt_hidden(abc,public_key)    
             response = await submit_search_text(qr_text, url, add_to_db=True, hidden_text=encrypted_txt,mon_id=mon_id)
-            if 'successfully added the data.' in response:
+            if 'Successfully added the data.' in response:
                 print('Data was added successfully.\n')
             else:
                 print('Error while adding new Data')
@@ -64,6 +65,7 @@ async def process_response_monocle(qr_text, response, url,mon_id):
             print("No plaintext added.\n")
 
     else:
+        print(f'Plain Nachricht: {qr_text}')
         print(f'Nachricht für dich: {response} \n' )  # Print the response from the server if the hidden-text was already stored
         return response
    except aiohttp.ClientError as e:
