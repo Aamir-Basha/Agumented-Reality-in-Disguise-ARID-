@@ -7,10 +7,13 @@
 
 Here’s an example:
 
-<img src="./images/showcasing.jpg" alt="QR Code Example" width="300" />
-<img src="./images/showcasing2.jpg" alt="QR Code Example" width="300" />
+<div style="display: inline-block; margin-right: 10px;">
+    <img src="./images/showcasing.jpg" alt="Image 1" width="300" />
+</div>
 
-
+<div style="display: inline-block; margin-right: 10px;">
+    <img src="./images/showcasing2.png" alt="Image 2" width="300" />
+</div>
 
 
 ## Project Goals
