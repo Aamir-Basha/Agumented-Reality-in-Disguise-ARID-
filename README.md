@@ -1,11 +1,12 @@
 
 # ARID: Augmented Reality in Disguise
 
-**ARID** is a unique project that explores the possibility of embedding secret messages in everyday images using QR codes and augmented reality (AR). The goal is to transform regular images into carriers of hidden, encrypted communication, leveraging the human tendency to overlook common visual elements in daily life. These QR codes, undetectable by the naked eye, contain encrypted messages that can only be deciphered by a specialized device—**the Monocle from Brilliant Labs**.
+**ARID** is a project that embeds secret messages in images using QR codes and augmented reality (AR). It converts ordinary images into carriers of encrypted communication, utilizing QR codes that are invisible to the naked eye. These codes contain encrypted messages that can only be decoded using the Monocle from Brilliant Labs.
 
-**Showcasing** There is a script for Running the Project Without the Monocle
 
-Here’s an example:
+**Showcasing:** There is a script for Running the Project Without the Monocle
+
+## Here’s an example:
 
 <div style="display: inline-block; margin-right: 10px;">
     <img src="./images/showcasing.png" alt="Image 1" width="300" />
