@@ -66,21 +66,20 @@ pip install opencv-python Pillow qreader Flask
 
 ### Embedding and Scanning Hidden Messages
  
-1.
- ```bash
-git clone https://github.com/Aamir-Basha/Agumented-Reality-in-Disguise-ARID-.git
-```
+1. ```bash
+   git clone https://github.com/Aamir-Basha/Agumented-Reality-in-Disguise-ARID-.git
+   ```
 2. ```bash
-cd server
-falsk run
+   cd server
+   falsk run
    ```
 3. **In a new Terminal** run the main script 
-```bash 
-cd client-without-monocle
-python main.py
-```     
+   ```bash 
+   cd client-without-monocle
+   python main.py
+   ```     
 
-Modes of Operation
+## Modes of Operation
 1. Client-Side Without Monocle
 This version is ideal for testing or showcasing the project without needing the Monocle. By using thresholding techniques and OpenCV, it enhances QR code detection under different lighting conditions and allows for hidden message processing directly on a local machine. The clientside-without-monocle directory contains the scripts to run this version.
 
